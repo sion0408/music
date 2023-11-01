@@ -1,0 +1,10 @@
+body{
+    overflow: hidden;
+    height: 95vh;
+}
+div{
+     box-sizing: border-box;
+}
+#app{
+    height: 95vh;
+}
