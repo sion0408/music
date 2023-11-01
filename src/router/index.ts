@@ -9,7 +9,8 @@ const router = createRouter({
       name: 'home',
       component: homePage,
       meta: {
-        title: '听音乐'
+        title: '听音乐',
+        keep: true
       }
     }
   ]

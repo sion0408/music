@@ -13,20 +13,27 @@
       autoplay
     />
     <div class="song__avatars">
-      <img class="song__img" :src="currentSongDetails.img" alt="" />
+      <img
+        class="song__img"
+        :src="
+          currentSongDetails.img ||
+          'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
+        "
+        alt=""
+      />
       <div class="song-title">
-        <div class="scroll-item">{{ currentSongDetails.song_name }}</div>
+        <div class="scroll-item">{{ currentSongDetails.songname ||currentSongDetails.audio_name }}</div>
         <div class="scroll-item__name">{{ currentSongDetails.author_name }}</div>
       </div>
     </div>
     <div class="control-buttons">
       <div class="play-control">
-        <el-icon :size="38" color="#99A9BF"><ArrowLeftBold /></el-icon>
+        <el-icon :size="38" color="#99A9BF" @click=" useCounterStore().numChange(0, 'minus')"><ArrowLeftBold /></el-icon>
         <el-icon v-if="!playButtonStatus" @click.stop="playBtn" :size="38" color="#99A9BF">
           <VideoPlay
         /></el-icon>
         <el-icon :size="38" color="#99A9BF" v-else @click="playPause"><VideoPause /></el-icon>
-        <el-icon :size="38" color="#99A9BF"><ArrowRightBold /></el-icon>
+        <el-icon :size="38" color="#99A9BF" @click=" useCounterStore().numChange(0, 'plus')"><ArrowRightBold /></el-icon>
       </div>
       <div class="slider-demo-block">
         <el-slider
@@ -50,9 +57,10 @@
             class="playlist__item"
             v-for="(item, index) of playlist"
             :key="index"
-            @click="play(index)"
+            @click="chuangeNum(index)"
+            :class="{ active: activeIndex == index }"
           >
-            <span>{{ item.filename }}</span>
+            <span>{{ item.songname }}</span>
             <el-icon @click.stop="ClearPlay(index)"><Close /></el-icon>
             <el-divider />
           </div>
@@ -112,6 +120,8 @@ onMounted(() => {
 })
 watch(playNum, (newValue) => {
   if (playlist.value.length > 0) {
+    duration.value = ''
+    current.value = ''
     play(newValue)
   } else {
     ElMessage.error('播放列表为空')
@@ -125,25 +135,35 @@ watch(doubleSpeed, (newValue) => {
 })
 
 function ClearPlay(num) {
-   useCounterStore().cleanUp(num) // 
+  useCounterStore().cleanUp(num) //
+}
+const activeIndex = ref(playNum)
+function chuangeNum(num) {
+  useCounterStore().numChange(num)
 }
 async function play(num) {
+  console.log(num)
   const row = playlist.value[num]
   console.log(row, '===', playlist)
-  currentSong.value = {
-    hash: row.hash,
-    album_id: row.album_id,
-    album_audio_id: row.audio_id,
-    _: Math.round(new Date()),
-    appid: 1014,
-    mid: '56bbbd2918b95d6975f420f96c5c29bb'
-  }
-  const { data } = await http.get(`/yy/index.php?r=play/getdata`, currentSong.value)
-  if (data.err_code === 0 && data.data.play_url) {
-    play_url.value = data.data.play_url
-    currentSongDetails.value = data.data
+  if (row.playUrl) {
+    play_url.value = row.playUrl
+    currentSongDetails.value = row
   } else {
-    playbackFailed()
+    currentSong.value = {
+      hash: row.hash,
+      album_id: row.album_id,
+      album_audio_id: row.audio_id,
+      _: Math.round(new Date()),
+      appid: 1014,
+      mid: '56bbbd2918b95d6975f420f96c5c29bb'
+    }
+    const { data } = await http.get(`/yy/index.php?r=play/getdata`, currentSong.value)
+    if (data.err_code === 0 && data.data.play_url) {
+      play_url.value = data.data.play_url
+      currentSongDetails.value = data.data
+    } else {
+      playbackFailed()
+    }
   }
 }
 function playbackFailed() {
@@ -153,8 +173,8 @@ function playbackFailed() {
 // 播放结束
 function endOfPlayback() {
   playButtonStatus.value = false
-    audioFrequencyDom.value.currentTime = 0
-  useCounterStore().numChange(0, true)
+  audioFrequencyDom.value.currentTime = 0
+  useCounterStore().numChange(0, 'plus')
 }
 function openDetails() {}
 function progressBar(newValue) {
@@ -306,5 +326,8 @@ function loadedmetadata(e) {
       }
     }
   }
+}
+.active {
+  color: aqua;
 }
 </style>

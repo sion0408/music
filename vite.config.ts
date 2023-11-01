@@ -34,6 +34,11 @@ export default defineConfig({
         target: 'http://www.xmsj.org/',  // 接口源地址
         changeOrigin: true,   // 开启跨域
         rewrite: (path => path.replace('/a', ''))
+      },
+      '/b': {
+        target: 'https://slider.kz/',  // 接口源地址
+        changeOrigin: true,   // 开启跨域
+        rewrite: (path => path.replace('/b', ''))
       }
     }
   }
