@@ -10,7 +10,7 @@
     />
     <!-- 顶部搜索 -->
     <div class="head-search">
-      <el-input v-model="searchTerm" placeholder="请输入要搜索的关键词" class="input-with-select">
+      <el-input @keyup="keyboard"  v-model="searchTerm" placeholder="请输入要搜索的关键词" class="input-with-select">
         <template #prepend>
           <el-select v-model="select" placeholder="Select" style="width: 115px">
             <el-option label="酷狗音乐" value="kugou" />
@@ -68,6 +68,11 @@ onMounted(() => {
 watch(select, (newValue) => {
   search()
 })
+function keyboard (e) {
+ if (e.keyCode === 13) {
+  search()
+ }
+}
 // 搜索按钮事件
 function search(title) {
   if(title) searchTerm.value = title
@@ -113,7 +118,8 @@ const songList = async (param) => {
     loading.value = false
   } catch (error) {
     ElMessage.error('搜索失败，请稍候重新再试')
-    songList(param)
+    loading.value = false
+    // songList(param)
   }
 }
 

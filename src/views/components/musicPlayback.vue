@@ -9,31 +9,42 @@
       :src="play_url"
       @timeupdate="updateProgress"
       @loadedmetadata="loadedmetadata"
-      preload="auto"
       autoplay
+      @playing="playButtonStatus = true"
     />
-    <div class="song__avatars">
-      <img
-        class="song__img"
-        :src="
-          currentSongDetails.img ||
-          'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
-        "
-        alt=""
-      />
+    <div class="song__avatars" @click="drawer = true">
+      <div class="avatar-box">
+        <img
+          class="song__img"
+          :src="
+            currentSongDetails.img ||
+            'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
+          "
+          alt=""
+        />
+        <div class="avatar-box__icon">
+          <el-icon><FullScreen /></el-icon>
+        </div>
+      </div>
       <div class="song-title">
-        <div class="scroll-item">{{ currentSongDetails.songname ||currentSongDetails.audio_name }}</div>
+        <div class="scroll-item">
+          {{ currentSongDetails.songname || currentSongDetails.audio_name }}
+        </div>
         <div class="scroll-item__name">{{ currentSongDetails.author_name }}</div>
       </div>
     </div>
     <div class="control-buttons">
       <div class="play-control">
-        <el-icon :size="38" color="#99A9BF" @click=" useCounterStore().numChange(0, 'minus')"><ArrowLeftBold /></el-icon>
+        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'minus')"
+          ><ArrowLeftBold
+        /></el-icon>
         <el-icon v-if="!playButtonStatus" @click.stop="playBtn" :size="38" color="#99A9BF">
           <VideoPlay
         /></el-icon>
         <el-icon :size="38" color="#99A9BF" v-else @click="playPause"><VideoPause /></el-icon>
-        <el-icon :size="38" color="#99A9BF" @click=" useCounterStore().numChange(0, 'plus')"><ArrowRightBold /></el-icon>
+        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'plus')"
+          ><ArrowRightBold
+        /></el-icon>
       </div>
       <div class="slider-demo-block">
         <el-slider
@@ -92,6 +103,24 @@
       </el-popover>
     </div>
   </div>
+  <!-- 播放器弹窗 -->
+  <el-drawer
+    v-model="drawer"
+    title="I am the title"
+    direction="btt"
+    :before-close="handleClose"
+    z-index="9999"
+    size="100%"
+    :show-close="false"
+    :with-header="false"
+  >
+    <div class="popup-body" style="height: 100%">
+      <el-icon @click="drawer = false" class="close-icon" :size="28" color="gray"
+        ><ArrowDownBold
+      /></el-icon>
+      <div class="player-body">你在哪里玩</div>
+    </div>
+  </el-drawer>
 </template>
 
 <script setup>
@@ -109,6 +138,7 @@ const currentSongDetails = ref({})
 const schedule = ref(0)
 const audioFrequencyDom = ref(null) // 音频DOm
 const playButtonStatus = ref(false)
+const drawer = ref(false)
 const current = ref('')
 const duration = ref('')
 const durationTime = ref('')
@@ -185,6 +215,7 @@ function playBtn() {
   audioFrequencyDom.value.play()
   playButtonStatus.value = true
 }
+
 function playPause() {
   audioFrequencyDom.value.pause()
   playButtonStatus.value = false
@@ -225,6 +256,9 @@ function updateProgress(e) {
 function loadedmetadata(e) {
   durationTime.value = e.target.duration
   duration.value = transTime(e.target.duration)
+}
+const handleClose = (done) => {
+  done()
 }
 </script>
 
@@ -316,6 +350,8 @@ function loadedmetadata(e) {
         right: 30px;
         /* margin-left: 100px; */
         vertical-align: middle;
+        flex-wrap: nowrap;
+        flex-shrink: sh;
       }
     }
     &:hover {
@@ -329,5 +365,66 @@ function loadedmetadata(e) {
 }
 .active {
   color: aqua;
+}
+.avatar-box {
+  width: 75px;
+  height: 75px;
+  position: relative;
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: #9f9292;
+    /* font-weight: 700; */
+    background: #00000078;
+    width: 75px;
+    height: 75px;
+    padding: 18%;
+    display: none;
+  }
+  &:hover {
+    .avatar-box__icon {
+      display: block;
+    }
+  }
+}
+.popup-body {
+  position: relative;
+  // filter: blur(10px);
+}
+.popup-body::before {
+  content: '';
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  position: relative;
+  background-image: url('https://pic.imgdb.cn/item/65433f54c458853aef073416.jpg');
+  background-size: 100%;
+  filter: blur(10px);
+}
+.close-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+::v-deep {
+  .el-drawer__body {
+    padding: 0 !important;
+    background: #9f9292;
+  }
+}
+.player-body {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  color: aliceblue;
+  padding: 35px;
+  text-align: center;
 }
 </style>
