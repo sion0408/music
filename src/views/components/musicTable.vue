@@ -1,6 +1,7 @@
 // 列表
 <template>
-  <div style="  z-index:0 ;position: relative;">
+  <div style="  cursor: pointer;
+    user-select: none; z-index:0 ;position: relative;">
     <!-- 表格 -->
     <el-table
       @row-click="lineClick"

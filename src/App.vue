@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, ref, defineAsyncComponent, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
 import MusicPlay from './views/components/musicPlayback.vue'

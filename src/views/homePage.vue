@@ -52,7 +52,7 @@ import { useCounterStore } from '@/stores/counter'
 
 const TableList = ref(null)
 const searchTerm = ref('庄心妍')
-const select = ref('slider')
+const select = ref('kugou')
 const pageCount = ref(1) // 总页码
 const listData = ref([]) // 列表数据
 const currentPage = ref(1)
@@ -79,10 +79,12 @@ function search(title) {
   loading.value = true
   currentPage.value = 1
   interfaceArray[select.value]()
+   similarSinger()
   // songList({ q: searchTerm.value })
 }
 // 相似歌手推荐
 async function similarSinger() {
+    similarartists.value = ''
   const { data } = await api.similarSinger(searchTerm.value)
   similarartists.value = data.similarartists.artist
   console.log(data.similarartists.artist, '相似歌手')
