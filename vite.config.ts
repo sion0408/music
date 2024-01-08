@@ -37,6 +37,11 @@ export default defineConfig({
         target: 'https://slider.kz/',  // 接口源地址
         changeOrigin: true,   // 开启跨域
         rewrite: (path => path.replace('/b', ''))
+      },
+      '/y': {
+        target: 'https://api.avdgw.com/',  // 接口源地址
+        changeOrigin: true,   // 开启跨域
+        rewrite: (path => path.replace('/y', ''))
       }
     }
   }

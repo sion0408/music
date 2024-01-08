@@ -16,10 +16,9 @@
       <div class="avatar-box">
         <img
           class="song__img"
-          :src="
-            currentSongDetails.img ||
+          :src="currentSongDetails.img ||
             'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
-          "
+            "
           alt=""
         />
         <div class="avatar-box__icon">
@@ -54,7 +53,7 @@
           :step="0.000001"
           :max="durationTime"
         />
-        <span style="font-size: 12px; margin-right: -40px">{{ current }}/{{ duration }}</span>
+        <span v-if="current && duration" style="font-size: 12px; margin-right: -40px">{{ current }}/{{ duration }}</span>
       </div>
     </div>
     <div>
@@ -81,6 +80,7 @@
         <template #reference>
           <el-icon :size="38" color="#99A9BF"><Operation /></el-icon>
         </template>
+        <!-- 音量控件 -->
         <div class="audio-control">
           <div>
             <div>音量</div>
@@ -206,7 +206,7 @@ function endOfPlayback() {
   audioFrequencyDom.value.currentTime = 0
   useCounterStore().numChange(0, 'plus')
 }
-function openDetails() {}
+function openDetails() { }
 function progressBar(newValue) {
   console.log(newValue)
   audioFrequencyDom.value.currentTime = newValue
@@ -272,14 +272,17 @@ const handleClose = (done) => {
   padding: 0 100px;
   justify-content: space-between;
 }
+
 .song__img {
   width: 75px;
   height: 75px;
 }
+
 .song__avatars {
   display: flex;
   gap: 10px;
 }
+
 .song-title {
   display: flex;
   flex-direction: column;
@@ -290,20 +293,25 @@ const handleClose = (done) => {
   overflow: hidden;
   white-space: nowrap;
 }
+
 .scroll-item {
   animation: scroll linear 5s alternate infinite;
+
   &__name {
     animation: scroll linear 4s alternate infinite;
   }
 }
+
 @keyframes scroll {
   0% {
     margin-left: 0;
   }
+
   100% {
     margin-left: -100%;
   }
 }
+
 .control-buttons {
   height: 100%;
   display: flex;
@@ -319,29 +327,35 @@ const handleClose = (done) => {
   display: flex;
   justify-content: space-between;
 }
+
 .slider-demo-block {
   display: flex;
   align-items: center;
   width: 200px;
 }
+
 ::v-deep {
   .el-slider__button {
     display: none;
   }
 }
+
 .audio-control {
   display: flex;
   gap: 25px;
   padding: 20px;
 }
+
 .playlist {
   width: 300px;
   height: 450px;
   overflow: hidden;
   overflow-y: scroll;
   padding: 20px;
+
   &__item {
     position: relative;
+
     ::v-deep {
       .el-icon {
         position: absolute;
@@ -354,6 +368,7 @@ const handleClose = (done) => {
         flex-shrink: sh;
       }
     }
+
     &:hover {
       ::v-deep {
         .el-icon {
@@ -363,13 +378,16 @@ const handleClose = (done) => {
     }
   }
 }
+
 .active {
   color: aqua;
 }
+
 .avatar-box {
   width: 75px;
   height: 75px;
   position: relative;
+
   &__icon {
     position: absolute;
     top: 50%;
@@ -384,16 +402,19 @@ const handleClose = (done) => {
     padding: 18%;
     display: none;
   }
+
   &:hover {
     .avatar-box__icon {
       display: block;
     }
   }
 }
+
 .popup-body {
   position: relative;
   // filter: blur(10px);
 }
+
 .popup-body::before {
   content: '';
   width: 100%;
@@ -407,17 +428,20 @@ const handleClose = (done) => {
   background-size: 100%;
   filter: blur(10px);
 }
+
 .close-icon {
   position: absolute;
   top: 10px;
   left: 10px;
 }
+
 ::v-deep {
   .el-drawer__body {
     padding: 0 !important;
     background: #9f9292;
   }
 }
+
 .player-body {
   position: absolute;
   top: 60px;

@@ -62,6 +62,12 @@ const navigationBar = ref([
     name: 'rankPage',
     title: '排行榜',
     icon: 'Histogram'
+  },
+  {
+    path: '/convertVoice',
+    name: 'convertVoice',
+    title: '文字转语音',
+    icon: 'AudioOutlined'
   }
 ])
 </script>
@@ -85,7 +91,8 @@ const navigationBar = ref([
   overflow: hidden;
   overflow-y: scroll;
 }
-.bottom-play__control{
+
+.bottom-play__control {
   position: fixed;
   bottom: 0;
   left: 0;

@@ -3,41 +3,23 @@
   <div style="  cursor: pointer;
     user-select: none; z-index:0 ;position: relative;">
     <!-- 表格 -->
-    <el-table
-      @row-click="lineClick"
-      ref="singleTableRef"
-      :data="props.listData"
-      v-loading="props.loading"
-      highlight-current-row
-      element-loading-text="正在加载中..."
-      height="450"
-      style="width: 100%"
-    >
+    <el-table @row-click="lineClick" ref="singleTableRef" :data="props.listData" v-loading="props.loading"
+      highlight-current-row element-loading-text="正在加载中..." height="450" style="width: 100%">
       <el-table-column fixed="left" prop="songname" label="歌曲名称" width="210" />
       <el-table-column prop="singername" label="演唱者" width="220" />
       <el-table-column prop="album_name" label="专辑名称" width="380" />
       <el-table-column prop="filesize" label="歌曲大小" />
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click.stop="handleClick(scope.row)"
-            >下载</el-button
-          >
+          <el-button link type="primary" size="small" @click.stop="handleClick(scope.row)">下载</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
   <!-- 分页区 -->
   <div class="pagination-area" v-if="props.formatStatus">
-    <el-pagination
-      :default-current-page="props.currentPage"
-      @size-change="sizeChange"
-      @current-change="sizeChange"
-      background
-      layout="prev, pager, next"
-      :default-page-size="15"
-      :page-size="15"
-      :total="props.pageCount"
-    />
+    <el-pagination :default-current-page="props.currentPage" @size-change="sizeChange" @current-change="sizeChange"
+      background layout="prev, pager, next" :default-page-size="15" :page-size="15" :total="props.pageCount" />
   </div>
 </template>
 
@@ -47,7 +29,6 @@ import { useCounterStore } from '@/stores/counter'
 import { ElTable } from 'element-plus'
 import { defineProps, ref, defineEmits, getCurrentInstance, watch, onMounted } from 'vue'
 const props = defineProps(['listData', 'pageCount', 'currentPage', 'formatStatus', 'loading'])
-console.log(props.listData, 'sdfadfasdfasfdaf')
 
 // 定义派发事件
 const emit = defineEmits(['sizeChange'])

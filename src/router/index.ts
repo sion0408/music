@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import homePage from '../views/homePage.vue'
+import convertVoice from '../views/convertVoice.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,6 +12,15 @@ const router = createRouter({
       meta: {
         title: '听音乐',
         keep: true
+      }
+    },
+    {
+      path: '/convertVoice',
+      name: 'convertVoice',
+      component: convertVoice,
+      meta: {
+        title: '文字转语音',
+        // keep: true
       }
     }
   ]
