@@ -11,6 +11,11 @@
                 <component :is="item.icon"></component>
               </el-icon>
               <template #title>{{ item.title }}</template>
+              <template v-if="item.subset">
+                <el-sub-menu v-for="(oItem, oIndex) of item.subset" :key="index + oIndex" :index="oItem.name">
+                  <el-menu-item index="1-4-1">item one</el-menu-item>
+                </el-sub-menu>
+              </template>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -64,10 +69,18 @@ const navigationBar = ref([
     icon: 'Histogram'
   },
   {
-    path: '/convertVoice',
-    name: 'convertVoice',
-    title: '文字转语音',
-    icon: 'AudioOutlined'
+    path: '',
+    name: '',
+    title: '工具',
+    icon: 'Microphone',
+    subset: [
+      {
+        path: '/convertVoice',
+        name: 'convertVoice',
+        title: '文字转语音',
+        icon: 'Microphone',
+      }
+    ]
   }
 ])
 </script>

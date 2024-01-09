@@ -8,7 +8,10 @@ export const useCounterStore = defineStore('playlist', () => {
   const playlist = ref([])
   const playNum = ref(0)
   function increment(data: [], state: any) {
-    if (state) playlist.value = data
+    if (state) {
+      playlist.value = data
+      return
+    }
     playlist.value = [...playlist.value, ...data]
     console.log(playlist.value, '播放列表数据',);
   }
@@ -20,6 +23,7 @@ export const useCounterStore = defineStore('playlist', () => {
     } else {
       playNum.value = num
     }
+
 
   }
   async function downloadMusic(params: object) {

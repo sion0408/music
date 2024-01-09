@@ -1,28 +1,17 @@
 <template>
   <div @click="openDetails" class="bottom-music__control">
-    <audio
-      ref="audioFrequencyDom"
-      @error="playbackFailed"
-      @play="playBtn"
-      v-show="true"
-      @ended="endOfPlayback"
-      :src="play_url"
-      @timeupdate="updateProgress"
-      @loadedmetadata="loadedmetadata"
-      autoplay
-      @playing="playButtonStatus = true"
-    />
+    <audio ref="audioFrequencyDom" @error="playbackFailed" @play="playBtn" v-show="true" @ended="endOfPlayback"
+      :src="play_url" @timeupdate="updateProgress" @loadedmetadata="loadedmetadata" autoplay
+      @playing="playButtonStatus = true" />
     <div class="song__avatars" @click="drawer = true">
       <div class="avatar-box">
-        <img
-          class="song__img"
-          :src="currentSongDetails.img ||
-            'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
-            "
-          alt=""
-        />
+        <img class="song__img" :src="currentSongDetails.img ||
+          'https://shigongbang.obs.cn-east-3.myhuaweicloud.com/d6ECPy6_v9Tbh4Rp7zJhW.png'
+          " alt="" />
         <div class="avatar-box__icon">
-          <el-icon><FullScreen /></el-icon>
+          <el-icon>
+            <FullScreen />
+          </el-icon>
         </div>
       </div>
       <div class="song-title">
@@ -34,51 +23,48 @@
     </div>
     <div class="control-buttons">
       <div class="play-control">
-        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'minus')"
-          ><ArrowLeftBold
-        /></el-icon>
+        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'minus')">
+          <ArrowLeftBold />
+        </el-icon>
         <el-icon v-if="!playButtonStatus" @click.stop="playBtn" :size="38" color="#99A9BF">
-          <VideoPlay
-        /></el-icon>
-        <el-icon :size="38" color="#99A9BF" v-else @click="playPause"><VideoPause /></el-icon>
-        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'plus')"
-          ><ArrowRightBold
-        /></el-icon>
+          <VideoPlay />
+        </el-icon>
+        <el-icon :size="38" color="#99A9BF" v-else @click="playPause">
+          <VideoPause />
+        </el-icon>
+        <el-icon :size="38" color="#99A9BF" @click="useCounterStore().numChange(0, 'plus')">
+          <ArrowRightBold />
+        </el-icon>
       </div>
       <div class="slider-demo-block">
-        <el-slider
-          @input="progressBar"
-          v-model="schedule"
-          :show-tooltip="false"
-          :step="0.000001"
-          :max="durationTime"
-        />
+        <el-slider @input="progressBar" v-model="schedule" :show-tooltip="false" :step="0.000001" :max="durationTime" />
         <span v-if="current && duration" style="font-size: 12px; margin-right: -40px">{{ current }}/{{ duration }}</span>
       </div>
     </div>
     <div>
       <el-popover placement="top" :width="300" trigger="click">
         <template #reference>
-          <el-icon :size="38" color="#99A9BF"><Fold /></el-icon>
+          <el-icon :size="38" color="#99A9BF">
+            <Fold />
+          </el-icon>
         </template>
         播放列表
         <div class="playlist">
-          <div
-            class="playlist__item"
-            v-for="(item, index) of playlist"
-            :key="index"
-            @click="chuangeNum(index)"
-            :class="{ active: activeIndex == index }"
-          >
+          <div class="playlist__item" v-for="(item, index) of playlist" :key="index" @click="chuangeNum(index)"
+            :class="{ active: activeIndex == index }">
             <span>{{ item.songname }}</span>
-            <el-icon @click.stop="ClearPlay(index)"><Close /></el-icon>
+            <el-icon @click.stop="ClearPlay(index)">
+              <Close />
+            </el-icon>
             <el-divider />
           </div>
         </div>
       </el-popover>
       <el-popover placement="top" :width="207" trigger="click">
         <template #reference>
-          <el-icon :size="38" color="#99A9BF"><Operation /></el-icon>
+          <el-icon :size="38" color="#99A9BF">
+            <Operation />
+          </el-icon>
         </template>
         <!-- 音量控件 -->
         <div class="audio-control">
@@ -89,14 +75,7 @@
           </div>
           <div>
             <div>倍速</div>
-            <el-slider
-              v-model="doubleSpeed"
-              show-stops
-              :step="0.5"
-              :max="10"
-              vertical
-              height="100px"
-            />
+            <el-slider v-model="doubleSpeed" show-stops :step="0.5" :max="10" vertical height="100px" />
             <span>{{ doubleSpeed }}</span>
           </div>
         </div>
@@ -104,20 +83,12 @@
     </div>
   </div>
   <!-- 播放器弹窗 -->
-  <el-drawer
-    v-model="drawer"
-    title="I am the title"
-    direction="btt"
-    :before-close="handleClose"
-    z-index="9999"
-    size="100%"
-    :show-close="false"
-    :with-header="false"
-  >
+  <el-drawer v-model="drawer" title="I am the title" direction="btt" :before-close="handleClose" z-index="9999"
+    size="100%" :show-close="false" :with-header="false">
     <div class="popup-body" style="height: 100%">
-      <el-icon @click="drawer = false" class="close-icon" :size="28" color="gray"
-        ><ArrowDownBold
-      /></el-icon>
+      <el-icon @click="drawer = false" class="close-icon" :size="28" color="gray">
+        <ArrowDownBold />
+      </el-icon>
       <div class="player-body">你在哪里玩</div>
     </div>
   </el-drawer>
@@ -158,10 +129,10 @@ watch(playNum, (newValue) => {
   }
 })
 watch(volumeControl, (newValue) => {
-  audioFrequencyDom.value.volume = newValue
+  if (play_url.value) audioFrequencyDom.value.volume = newValue
 })
 watch(doubleSpeed, (newValue) => {
-  audioFrequencyDom.value.playbackRate = newValue
+  if (play_url.value) audioFrequencyDom.value.playbackRate = newValue
 })
 
 function ClearPlay(num) {
@@ -172,10 +143,14 @@ function chuangeNum(num) {
   useCounterStore().numChange(num)
 }
 async function play(num) {
-  console.log(num)
+  console.log(playlist.value.length, '--------------------------------', activeIndex.value);
+  if (playlist.value.length - 1 < activeIndex.value) {
+    ElMessage('列表播放结束')
+    // chuangeNum(0)
+    return
+  }
   const row = playlist.value[num]
-  console.log(row, '===', playlist)
-  if (row.playUrl) {
+  if (row?.playUrl) {
     play_url.value = row.playUrl
     currentSongDetails.value = row
   } else {
