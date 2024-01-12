@@ -18,8 +18,8 @@
   </div>
   <!-- 分页区 -->
   <div class="pagination-area" v-if="props.formatStatus">
-    <el-pagination :default-current-page="props.currentPage" @size-change="sizeChange" @current-change="sizeChange"
-      background layout="prev, pager, next" :default-page-size="15" :page-size="15" :total="props.pageCount" />
+    <el-pagination :default-current-page="currentPage" @size-change="sizeChange" @current-change="sizeChange" background
+      layout="prev, pager, next" :default-page-size="15" :page-size="15" :total="props.pageCount" />
   </div>
 </template>
 
@@ -37,8 +37,10 @@ function sizeChange(value: number) {
   emit('sizeChange', value)
   console.log('-=-=')
 }
+
 const singleTableRef = ref<InstanceType<typeof ElTable>>()
 const currentRow = ref()
+const currentPage = props.currentPage
 // 某行被点击
 async function lineClick(row) {
   let currentSongIndex = ''

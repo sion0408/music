@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import homePage from '../views/homePage.vue'
 import convertVoice from '../views/convertVoice.vue'
+import localChat from '../views/localChat.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,15 @@ const router = createRouter({
       meta: {
         title: '文字转语音',
         // keep: true
+      }
+    },
+    {
+      path: '/localChat',
+      name: 'localChat',
+      component: localChat,
+      meta: {
+        title: '局域网聊天',
+        keep: true
       }
     }
   ]

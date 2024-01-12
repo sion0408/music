@@ -6,17 +6,36 @@
         <el-col>
           <h5 class="mb-2">Default colors</h5>
           <el-menu router default-active="1" class="el-menu-vertical-demo">
-            <el-menu-item :span="12" v-for="(item, index) of navigationBar" :key="index" :index="item.name">
-              <el-icon>
-                <component :is="item.icon"></component>
-              </el-icon>
-              <template #title>{{ item.title }}</template>
-              <template v-if="item.subset">
-                <el-sub-menu v-for="(oItem, oIndex) of item.subset" :key="index + oIndex" :index="oItem.name">
-                  <el-menu-item index="1-4-1">item one</el-menu-item>
-                </el-sub-menu>
-              </template>
-            </el-menu-item>
+            <template v-for="(item, index) of navigationBar" :key="index">
+              <el-menu-item v-if="!item.subset" :span="12" :index="item.name">
+                <el-icon>
+                  <component :is="item.icon"></component>
+                </el-icon>
+                <span>
+                  {{ item.title }}
+                </span>
+              </el-menu-item>
+              <el-sub-menu v-else>
+                <template #title>
+                  <el-icon>
+                    <component :is="item.icon"></component>
+                  </el-icon>
+                  <span>
+                    {{ item.title }}
+                  </span>
+                </template>
+                <el-menu-item-group v-for="(oItem, oIndex) of item.subset" :key="index + oIndex" :index="oItem.name">
+                  <el-menu-item :index="oItem.name">
+                    <el-icon>
+                      <component :is="oItem.icon"></component>
+                    </el-icon>
+                    <span>
+                      {{ oItem.title }}
+                    </span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-sub-menu>
+            </template>
           </el-menu>
         </el-col>
       </el-row>
@@ -72,14 +91,21 @@ const navigationBar = ref([
     path: '',
     name: '',
     title: '工具',
-    icon: 'Microphone',
+    icon: 'Menu',
     subset: [
       {
         path: '/convertVoice',
         name: 'convertVoice',
         title: '文字转语音',
         icon: 'Microphone',
-      }
+      },
+      {
+        path: '/localChat',
+        name: 'localChat',
+        title: '局域网聊天',
+        icon: 'ChatDotSquare',
+      },
+
     ]
   }
 ])

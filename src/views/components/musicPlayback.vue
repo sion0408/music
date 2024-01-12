@@ -97,13 +97,14 @@
 <script setup>
 import http from '../../api/index'
 import { useCounterStore } from '@/stores/counter'
+import { wsStorage } from '@/stores/wsStorage.ts'
 import { storeToRefs } from 'pinia'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 
 import { ref, onMounted, watch } from 'vue'
 
 const currentSong = ref({})
-const { playlist, playNum } = storeToRefs(useCounterStore())
+const { playlist, playNum, isFollowListening } = storeToRefs(useCounterStore())
 const play_url = ref('')
 const currentSongDetails = ref({})
 const schedule = ref(0)
@@ -125,7 +126,17 @@ watch(playNum, (newValue) => {
     current.value = ''
     play(newValue)
   } else {
-    ElMessage.error('播放列表为空')
+    // ElMessage.error('播放列表为空')
+    ElNotification({
+      title: 'Warning',
+      message: '播放列表为空',
+      type: '提示',
+    })
+  }
+})
+watch(play_url, (newValue) => {
+  if (isFollowListening) {
+    wsStorage().send('', (currentSongDetails.value || currentSongDetails.value))
   }
 })
 watch(volumeControl, (newValue) => {
@@ -153,6 +164,7 @@ async function play(num) {
   if (row?.playUrl) {
     play_url.value = row.playUrl
     currentSongDetails.value = row
+
   } else {
     currentSong.value = {
       hash: row.hash,
@@ -172,6 +184,9 @@ async function play(num) {
   }
 }
 function playbackFailed() {
+  if (playlist.value.length - 1 < activeIndex.value) {
+    return
+  }
   ElMessage.error('暂时无法播放，即将切换到下一首')
   endOfPlayback()
 }

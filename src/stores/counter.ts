@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import http from '../api/index'
 import { ElMessage } from 'element-plus'
@@ -7,7 +7,9 @@ import { ElMessage } from 'element-plus'
 export const useCounterStore = defineStore('playlist', () => {
   const playlist = ref([])
   const playNum = ref(0)
+  const isFollowListening = ref(false)
   function increment(data: [], state: any) {
+
     if (state) {
       playlist.value = data
       return
@@ -25,6 +27,9 @@ export const useCounterStore = defineStore('playlist', () => {
     }
 
 
+  }
+  function setFollowListening(value: any) {
+    isFollowListening.value = value
   }
   async function downloadMusic(params: object) {
     const currentSong = {
@@ -49,5 +54,5 @@ export const useCounterStore = defineStore('playlist', () => {
     }
     playlist.value.splice(num, 1)
   }
-  return { playlist, increment, playNum, numChange, cleanUp, downloadMusic }
+  return { playlist, increment, playNum, numChange, cleanUp, downloadMusic, setFollowListening, isFollowListening }
 })
