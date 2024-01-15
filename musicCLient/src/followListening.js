@@ -18,6 +18,8 @@ export const followListening = defineStore('socket', () => {
     let socketMusic = null
     let chatHistoryMusic = ref([])
     let musicData = ref({})
+    let prompt = ref('')
+    const url = '../public/56777133.mp3'
     // 连接ws实例
     function startConnecting() {
         // 创建 WebSocket 实例
@@ -77,14 +79,18 @@ export const followListening = defineStore('socket', () => {
 
         if (receivedMessage.musicData) {
             musicData.value = receivedMessage.musicData
-            console.warn(`收到音乐${receivedMessage.musicData.songname}即将播放`);
+            console.warn(`收到音乐${receivedMessage.musicData.songname || receivedMessage.musicData.song_name}即将播放`);
         } else {
             chatHistoryMusic.value.push(receivedMessage) // 1是自己 2是他人
-            console.warn('收到消息,'receivedMessage.str);
+            console.warn('收到消息,', receivedMessage.str);
+            prompt.value = url
+            setTimeout(() => {
+                prompt.value = ''
+            }, 3000);
         }
 
     }
-    return { startConnecting, send, chatHistoryMusic, close, musicData, clearData }
+    return { startConnecting, send, chatHistoryMusic, close, musicData, clearData, prompt }
 })
 
 

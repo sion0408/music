@@ -9,6 +9,8 @@ const activeNames = ref([])
 const { chatHistoryMusic } = storeToRefs(followListening())
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 
+const url = '../public/65755091.mp3'
+const prompt = ref('')
 
 watch(musicData, (getvalue) => {
   audioFrequencyDom.value.play()
@@ -68,8 +70,9 @@ const ssss = () => {
   <button @click="ssss">关闭or打开</button>
   <div v-show="typess">
     <header>
-      {{ musicData.songname }}
-      <audio ref="audioFrequencyDom" :src="musicData.playUrl" autoplay controls />
+      {{ musicData.songname || musicData.song_name }}
+      <audio ref="audioFrequencyDom" :src="musicData.playUrl || musicData.play_url" autoplay controls />
+      <audio :src="followListening().prompt" autoplay />
     </header>
     <main>
       <div>

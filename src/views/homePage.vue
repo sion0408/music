@@ -42,14 +42,14 @@ import { useCounterStore } from '@/stores/counter'
 import { wsStorage } from '@/stores/wsStorage.ts'
 
 const TableList = ref(null)
-const searchTerm = ref('庄心妍')
+const searchTerm = ref('')
 const select = ref('slider')
 const pageCount = ref(1) // 总页码
 const listData = ref([]) // 列表数据
 const currentPage = ref(1)
 const formatStatus = ref(true)
 const loading = ref(true) // 数据加载状态
-const followListening = ref(false) // 是否跟听
+const followListening = ref(useCounterStore().isFollowListening) // 是否跟听
 const similarartists = ref([]) // 相似歌手推荐
 
 onMounted(() => {

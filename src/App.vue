@@ -2,6 +2,7 @@
   <!-- <el-button mb-2 @click="toggle">Switch Language</el-button> -->
   <el-config-provider :locale="locale">
     <div class="boss">
+      <audio :src="wsStorage().prompt" autoplay />
       <el-row class="tac">
         <el-col>
           <h5 class="mb-2">Default colors</h5>
@@ -58,6 +59,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
 import MusicPlay from './views/components/musicPlayback.vue'
 const language = ref('zh-cn')
+import { wsStorage } from './stores/wsStorage.ts'
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 const toggle = () => {
   language.value = language.value === 'zh-cn' ? 'en' : 'zh-cn'

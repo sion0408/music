@@ -135,7 +135,7 @@ watch(playNum, (newValue) => {
   }
 })
 watch(play_url, (newValue) => {
-  if (isFollowListening) {
+  if (isFollowListening.value) {
     wsStorage().send('', (currentSongDetails.value || currentSongDetails.value))
   }
 })

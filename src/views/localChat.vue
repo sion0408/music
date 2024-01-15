@@ -55,25 +55,7 @@ const send = () => {
 // 连接ws弹窗
 
 const open = () => {
-    if (userInfo().userInfo.name) {
-        return
-    }
-    ElMessageBox.prompt('请输入聊天室昵称', '昵称填写(管理端)', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /[\u4e00-\u9fa5]+/,
-        inputErrorMessage: '昵称只能包含汉字',
-    })
-        .then(({ value }) => {
-            //    保存用户信息
-            userInfo().setInfo(value)
-            // 连接ws 
-            wsStorage().startConnecting()
-
-        })
-        .catch(() => {
-            console.log('用户取消输入');
-        })
+    wsStorage().startConnecting()
 }
 
 </script>
