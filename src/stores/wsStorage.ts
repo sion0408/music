@@ -19,14 +19,14 @@ const createAFile = (content: any) => {
 }
 // / ws存储
 export const wsStorage = defineStore('socket', () => {
-    let socket = null
-    let chatHistory = ref([])
+    let socket: any = null
+    let chatHistory: object = ref([])
     let prompt = ref('')
     const url = '../public/56777133.mp3'
     // 连接ws实例
     function startConnecting() {
         // 连接之前进行身份输入
-        createNewFile('newfile.txt');
+        // createNewFile('newfile.txt');
         if (userInfo().userInfo.name && socket?.readyState == 1) {
             return
         }
@@ -46,7 +46,7 @@ export const wsStorage = defineStore('socket', () => {
                     console.log('已经有实例链接');
                     return
                 }
-                socket = new WebSocket('ws://192.168.0.38:8080');
+                socket = new WebSocket(`ws://192.168.0.38:4444/localChat?id=${value}`);
 
                 // 等待连接建立成功
                 socket.onopen = function (event) {
@@ -95,10 +95,22 @@ export const wsStorage = defineStore('socket', () => {
 
         }
     }
-    function receivedMessage(value: object) {
-        const receivedMessage = JSON.parse(value)
-        console.log(receivedMessage, '收到消息', chatHistory.value)
-        chatHistory.value.push(receivedMessage) // 1是自己 2是他人
+
+    // 定义一个函数来判断变量是否为字符串或者JSON字符串
+    function isStringOrJson(variable) {
+        // 首先判断变量的类型是否为字符串
+        try {
+            JSON.parse(variable);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function receivedMessage(value: string) {
+        const receivedMessageValue: any = isStringOrJson(value) ? JSON.parse(value) : value;
+        console.log(value, '收到消息', chatHistory.value)
+        chatHistory.value.push(receivedMessageValue) // 1是自己 2是他人
         prompt.value = url
         setTimeout(() => {
             prompt.value = ''

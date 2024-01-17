@@ -28,7 +28,7 @@ export const followListening = defineStore('socket', () => {
             console.log('已经有实例链接');
             return
         }
-        socketMusic = new WebSocket('ws://192.168.0.38:8080');
+        socketMusic = new WebSocket(`ws://192.168.0.38:4444/localChat?id=${userInfo().userInfo.name}`);
 
         // 等待连接建立成功
         socketMusic.onopen = function (event) {

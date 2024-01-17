@@ -84,12 +84,14 @@ const ssss = () => {
         <el-collapse v-model="activeNames">
           <el-collapse-item title="Consistency" name="1">
             <div v-for="(item, index) of chatHistoryMusic" :key="index"
-              :class="item.userData.name != userInfo().userInfo.name ? 'chat-history__left' : 'chat-history'">
-
+              :class="item?.userData?.name != userInfo().userInfo.name ? 'chat-history__left' : 'chat-history'">
               <div class="chat-time">
                 {{ item.time }}
               </div>
-              <div class="chat-history__item">
+              <div v-if="item.prompt" class="chat-time">
+                {{ item.prompt.userId }} {{ item.prompt.type == 1 ? "已连接" : "已断开" }}
+              </div>
+              <div v-else class="chat-history__item">
                 {{ item.str }}
                 <div class="user-information">
                   {{ item.userData.name }}
