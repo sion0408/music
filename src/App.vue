@@ -107,7 +107,12 @@ const navigationBar = ref([
         title: '局域网聊天',
         icon: 'ChatDotSquare',
       },
-
+      {
+        path: '/audioSharing',
+        name: 'audioSharing',
+        title: '音频共享',
+        icon: 'Microphone',
+      },
     ]
   }
 ])

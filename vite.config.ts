@@ -13,6 +13,7 @@ export default defineConfig({
     }
   },
   server: {
+    https: true,
     open: true, // 是否自动打开浏览器
     port: 3000, // 端口号
 

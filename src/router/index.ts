@@ -32,6 +32,15 @@ const router = createRouter({
         title: '局域网聊天',
         keep: true
       }
+    },
+    {
+      path: '/audioSharing',
+      name: 'audioSharing',
+      component: () => import(`../views/audioSharing.vue`),
+      meta: {
+        title: '局域网聊天',
+        keep: true
+      }
     }
   ]
 })

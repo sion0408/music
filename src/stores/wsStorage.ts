@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getCurrentTime } from '@/views/mock/index.ts'
 import { useCounterStore } from '@/stores/counter'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 
 // 定义文件路径及名称
 const filePath = '@/views/mock/record.json';
@@ -46,7 +46,7 @@ export const wsStorage = defineStore('socket', () => {
                     console.log('已经有实例链接');
                     return
                 }
-                socket = new WebSocket(`ws://192.168.0.38:4444/localChat?id=${value}`);
+                socket = new WebSocket(`ws://192.168.0.38:4444/localChat?id=`);
 
                 // 等待连接建立成功
                 socket.onopen = function (event) {
@@ -110,8 +110,18 @@ export const wsStorage = defineStore('socket', () => {
     function receivedMessage(value: string) {
         const receivedMessageValue: any = isStringOrJson(value) ? JSON.parse(value) : value;
         console.log(value, '收到消息', chatHistory.value)
+        // 添加身份验证失效提示
+        if (receivedMessageValue.prompt.type === 3) {
+            ElNotification({
+                title: '错误',
+                message: '请传递合法身份昵称',
+                type: 'error',
+            })
+            return
+        }
+
         chatHistory.value.push(receivedMessageValue) // 1是自己 2是他人
-        prompt.value = url
+        prompt.value = url // 消息提示音乐
         setTimeout(() => {
             prompt.value = ''
         }, 3000);
